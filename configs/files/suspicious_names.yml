@@ -161,3 +161,5 @@ names:
      - 'Invoke-MS16032'
      - 'Invoke-WScriptBypassUAC'
      - 'tokenvator'
+     - 'pykek'
+     - 'adaclscanner'
