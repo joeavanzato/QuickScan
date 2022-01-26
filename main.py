@@ -14,6 +14,7 @@ import configs.files.start
 import configs.services.start
 import configs.tasks.start
 import configs.false_extensions.start
+import configs.network_connections.start
 
 def parse_args():
     arguments = {}
@@ -61,6 +62,8 @@ def launch_configs(args):
         configs.tasks.start.launch()
     if 'false_extensions' in args['configs']:
         configs.false_extensions.start.launch()
+    if 'network_connections' in args['configs']:
+        configs.network_connections.start.launch()
 
 def start_detections(file, fields):
     with open(file, 'w', newline='', encoding='utf-8') as f:
