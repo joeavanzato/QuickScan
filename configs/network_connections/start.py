@@ -83,7 +83,7 @@ def process_services(file):
             print(f"Potential Inbound WinRM Connection to: {remote_ip}")
             detection_base = {}
             detection_base['Name'] = "Potential Inbound WinRM Connection"
-            detection_base['Reason'] = "Malware and Threat Actors often use WinRM as a lateral movement mechanism - ensure that the outbound connection is not malicious."
+            detection_base['Reason'] = "Malware and Threat Actors often use WinRM as a lateral movement mechanism - ensure that the inbound connection is not malicious."
             detection_base['File Path'] = "NA"
             detection_base['Registry Path'] = "NA"
             detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
@@ -96,6 +96,102 @@ def process_services(file):
             detection_base = {}
             detection_base['Name'] = "WinRM Connection Listener"
             detection_base['Reason'] = "Malware and Threat Actors often use WinRM as an initial access or lateral movement mechanism."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "Medium"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
+        if state == "Listen" and local_port == "22":
+            print(f"Listening for SSH Connections")
+            detection_base = {}
+            detection_base['Name'] = "SSH Connection Listener"
+            detection_base['Reason'] = "Malware and Threat Actors often use SSH as an initial access or lateral movement mechanism."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "Medium"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
+        if state.startswith("Established") and local_port == "22":
+            print(f"Inbound SSH Connection from {remote_ip}")
+            detection_base = {}
+            detection_base['Name'] = "Inbound SSH Connection"
+            detection_base['Reason'] = "Malware and Threat Actors often use SSH as an initial access or lateral movement mechanism."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "High"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
+        if state.startswith("Established") and remote_port == "22":
+            print(f"Outbound SSH Connection to {remote_ip}")
+            detection_base = {}
+            detection_base['Name'] = "Outbound SSH Connection"
+            detection_base['Reason'] = "Malware and Threat Actors often use SSH as an initial access or lateral movement mechanism."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "Medium"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
+        if state == "Listen" and local_port == "23":
+            print(f"Listening for TelNet Connections")
+            detection_base = {}
+            detection_base['Name'] = "TelNet Connection Listener"
+            detection_base['Reason'] = "Malware and Threat Actors often use TelNet as an initial access or lateral movement mechanism."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "Medium"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
+        if state.startswith("Established") and (local_port == "23" or remote_port == "23"):
+            print(f"Established TelNet Connection to/from {remote_ip}")
+            detection_base = {}
+            detection_base['Name'] = "TelNet Connection Established"
+            detection_base['Reason'] = "Malware and Threat Actors often use TelNet as an initial access or lateral movement mechanism."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "Medium"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
+        if state == "Listen" and local_port == "445":
+            print(f"Listening for SMB Connections")
+            detection_base = {}
+            detection_base['Name'] = "SMB Connection Listener"
+            detection_base['Reason'] = "Malware and Threat Actors often use SMB as an initial access or lateral movement mechanism."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "Medium"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
+        if state.startswith("Established") and remote_port in ["139, 445"]:
+            print(f"Potential Outbound SMB Connection to: {remote_ip}")
+            detection_base = {}
+            detection_base['Name'] = "Potential Outbound SMB Connection"
+            detection_base['Reason'] = "Malware and Threat Actors often use SMB as a lateral movement mechanism - ensure that the outbound connection is not malicious."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "Medium"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
+        if state.startswith("Established") and local_port in ["139, 445"]:
+            print(f"Potential Inbound SMB Connection from: {remote_ip}")
+            detection_base = {}
+            detection_base['Name'] = "Potential Inbound SMB Connection"
+            detection_base['Reason'] = "Malware and Threat Actors often use SMB as a lateral movement mechanism - ensure that the inbound connection is not malicious."
             detection_base['File Path'] = "NA"
             detection_base['Registry Path'] = "NA"
             detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
