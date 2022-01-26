@@ -9,7 +9,7 @@ def launch():
     logging.info(str(datetime.datetime.now()) + " Starting  'files' Config")
     print("STARTING FILE-NAME SCAN")
     name_data, ext_data = read_configs()
-    #file_list = name_scan(name_data)
+    file_list = name_scan(name_data)
     ext_list = extension_scan(ext_data)
 
 
