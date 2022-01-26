@@ -46,8 +46,20 @@ def process_services(file):
         if len(base_file) < 4:
             print(f"Abnormally Short Image Path: {image_path}")
             detection_base = {}
-            detection_base['Name'] = "Abnormally short service name"
+            detection_base['Name'] = "Abnormally Short Service Name"
             detection_base['Reason'] = "Malware and Threat Actors often use short/randomized executables"
+            detection_base['File Path'] = image_path
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Execution, Persistence, Privilege Escalation"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "Medium"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
+        if image_path.startswith(os.getenv("HOMEDRIVE")+"\\Users"):
+            print(f"Service Starting from Users Directory: {image_path}")
+            detection_base = {}
+            detection_base['Name'] = "Service Starting from 'Users' Directory"
+            detection_base['Reason'] = "Most legitimate services do not launch from the Users directory."
             detection_base['File Path'] = image_path
             detection_base['Registry Path'] = "NA"
             detection_base['MITRE Tactic'] = "Execution, Persistence, Privilege Escalation"
