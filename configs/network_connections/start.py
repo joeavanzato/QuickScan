@@ -8,7 +8,7 @@ import configuration_data
 import helpers.execute
 import helpers.csv_parse
 import helpers.write_detection
-
+import configs.network_connections.qwinsta
 # Field Output
 # LocalAddress	LocalPort	RemoteAddress	RemotePort	State	Process
 
@@ -19,6 +19,7 @@ def launch():
     result = helpers.execute.execute(command)
     if not result == "ERROR":
         process_services("evidence\connections.csv")
+    #configs.network_connections.qwinsta.launch()
 
 def process_services(file):
     #fields = ['Name', 'Reason','File Path','Registry Path','MITRE Tactic','MITRE Technique','Risk','Details']
@@ -199,7 +200,18 @@ def process_services(file):
             detection_base['Risk'] = "Medium"
             detection_base['Details'] = str(d)
             detection_list.append(detection_base)
-
+        if state.startswith("Established") and process_name.lower() in ["svchost", "lsass","smss","csrss","wininit","services","lsm","winlogon","explorer"]:
+            print(f"System Process with Established Connection: {process_name}:{remote_ip}")
+            detection_base = {}
+            detection_base['Name'] = "System Process with Established Connection"
+            detection_base['Reason'] = "Malware and Threat Actors often abuse system processes or malicious threads with identical names to avoid detection."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "High"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
     helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)
 
 
