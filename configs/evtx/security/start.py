@@ -2,6 +2,7 @@ import logging
 import datetime
 import os
 import sys
+import re
 
 import yaml
 import win32evtlog
@@ -16,6 +17,7 @@ def launch():
     print("STARTING evtx\\security SCAN")
     #command = 'powershell -Command "Get-WinEvent -FilterHashTable @{LogName=\'Security\'; Id=\'1100,1102,4624,4625,4648,4649,4688,4697,4698,4700,4702,4720,4722,4723,4724,4726,4732,5140\' }  | Select Id,RecordId,TimeCreated,Message | Export-Csv -NoTypeInformation -Path .\evidence\security.csv'
     command = 'powershell -Command "Get-WinEvent -FilterHashTable @{LogName=\'Security\'}  | Select Id,RecordId,TimeCreated,Message | Export-Csv -NoTypeInformation -Path .\evidence\security.csv'
+    print("Exporting Security.evtx to CSV [This can take a few minutes if the log is large]..")
     #result = helpers.execute.execute(command)
     result = 0
     if not result == "ERROR":
@@ -32,6 +34,21 @@ def process(file):
             print(e)
             logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\evtx\\security\\malicious_commands.yml")
             sys.exit(1)
+    with open('configs\\evtx\\security\\malicious_commandline_regex.yml') as f:
+        try:
+            command_regex = yaml.safe_load(f)
+        except yaml.YAMLError as e:
+            print(e)
+            logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\evtx\\security\\malicious_commandline_regex.yml")
+            sys.exit(1)
+
+    re_list = []
+    re_dict = {}
+    for item in command_regex['keys']:
+        re_item = command_regex['keys'][item]['command']
+        re_list.append(re_item)
+        re_dict[command_regex['keys'][item]['command']] = item #For reverse lookup in YAML
+
     command_dict = {}
     for item in command_data['keys']:
         #print(command_data['keys'][item]['command'])
@@ -40,10 +57,10 @@ def process(file):
 
     for d in data:
         if d['Id'] == '4688':
-            process_path, binary_name, command_line = parse_4688(d, command_dict)
+            process_path, binary_name, command_line = parse_4688(d, command_dict, detection_list,command_regex, re_list, re_dict, d)
             if process_path != 0 :
                 detection_base = {}
-                print(f"Detected potentially suspicious binary execution: {command_data['keys'][command_dict[binary_name]]['name']}")
+                print(f"Potentially suspicious binary execution: {command_data['keys'][command_dict[binary_name]]['name']}")
                 detection_base['Name'] = command_data['keys'][command_dict[binary_name]]['name']
                 detection_base['Reason'] = command_data['keys'][command_dict[binary_name]]['description']
                 detection_base['File Path'] = "NA"
@@ -57,7 +74,7 @@ def process(file):
     helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)
 
 
-def parse_4688(row, command_dict):
+def parse_4688(row, command_dict, detection_list, command_regex, re_list, re_dict, d):
     ret = 0
     rows = row['Message'].split("\n")
     for row in rows:
@@ -71,12 +88,30 @@ def parse_4688(row, command_dict):
                 ret = 1
         elif row.startswith("Process Command Line"):
             process_cl = row.split(":", 1)[1].strip()
+            if process_cl != "" and ret == 0: #If we aren't already returning a detection and the command-line isn't blank AKA IS logging
+                regex_4688(process_cl, detection_list,command_regex,  re_list, re_dict, d)
             #print(process_cl)
     if ret == 1:
         return process_name,binary_name, process_cl
     else:
         return 0,0,0
 
+def regex_4688(commandline, detection_list,command_regex, re_list, re_dict, d):
+    matches = []
+    for r in re_list:
+        matches += re.findall(r,commandline)
+    if len(matches) != 0:
+        detection_base = {}
+        print(f"Regex Detection for Suspicous Commandline: {command_regex['keys'][re_dict[commandline]]['name']}")
+        detection_base['Name'] = command_regex['keys'][re_dict[commandline]]['name']
+        detection_base['Reason'] = command_regex['keys'][re_dict[commandline]]['description']
+        detection_base['File Path'] = "NA"
+        detection_base['Registry Path'] = "NA"
+        detection_base['MITRE Tactic'] = command_regex['keys'][re_dict[commandline]]['tactic']
+        detection_base['MITRE Technique'] = command_regex['keys'][re_dict[commandline]]['technique']
+        detection_base['Risk'] = command_regex['keys'][re_dict[commandline]]['risk']
+        detection_base['Details'] = str(d)
+        detection_list.append(detection_base)
 
 def read_eventlog(evt_log):
     #fields = ['Name', 'Reason','File Path','Registry Path','MITRE Tactic','MITRE Technique','Risk','Details']
