@@ -25,4 +25,4 @@ def launch():
                     hash = line.split(";", 1)[0]
                 except ValueError:
                     hash = line
-                f.write(hash)
+                f.write(hash+"\n")
