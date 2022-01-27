@@ -1,6 +1,12 @@
 # QuickScan
  Hunting for Abnormalities
 
+Uses some awesome existing repositories:
+* https://github.com/chenerlich/FCL
+* https://Neo23x0/signature-base
+* https://github.com/yaml/pyyaml
+* 
+
 ### Scheduled Tasks
 * Abnormally Short-Named Binaries [DONE]
 * Potentially Dangerous Extension [DONE]
