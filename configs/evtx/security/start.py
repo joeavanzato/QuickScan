@@ -63,7 +63,10 @@ def process(file):
                 print(f"Potentially Suspicious Binary Execution: {command_data['keys'][command_dict[binary_name]]['name']}")
                 detection_base['Name'] = command_data['keys'][command_dict[binary_name]]['name']
                 detection_base['Reason'] = command_data['keys'][command_dict[binary_name]]['description']
-                detection_base['File Path'] = str(process_path)
+                if command_line != "":
+                    detection_base['File Path'] = str(command_line)
+                else:
+                    detection_base['File Path'] = str(process_path)
                 detection_base['Registry Path'] = "NA"
                 detection_base['MITRE Tactic'] = command_data['keys'][command_dict[binary_name]]['tactic']
                 detection_base['MITRE Technique'] = command_data['keys'][command_dict[binary_name]]['technique']
@@ -88,7 +91,7 @@ def parse_4688(row, command_dict, detection_list, command_regex, re_list, re_dic
                 ret = 1
         elif row.startswith("Process Command Line"):
             process_cl = row.split(":", 1)[1].strip()
-            if process_cl != "" and ret == 0: #If we aren't already returning a detection and the command-line isn't blank AKA IS logging
+            if process_cl != "" and ret == 0: #If we aren't already returning a detection and the command-line isn't blank AKA IS logging - should probably do GP check for appropriate policy instead.
                 regex_4688(process_cl, detection_list,command_regex,  re_list, re_dict, d)
             #print(process_cl)
     if ret == 1:

