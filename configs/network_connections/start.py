@@ -212,6 +212,19 @@ def process_services(file):
             detection_base['Risk'] = "High"
             detection_base['Details'] = str(d)
             detection_list.append(detection_base)
+        if state.startswith("Established") and (local_port in ["5900"] or remote_port in ["5900"]):
+            print(f"Potential VNC Connection: {process_name}:{local_port} to {remote_ip}:{remote_port}")
+            detection_base = {}
+            detection_base['Name'] = "Potential VNC Connection"
+            detection_base['Reason'] = "Malware and Threat Actors often abuse VNC protocols for C2."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Initial Access, Lateral Movement"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "High"
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
+
     helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)
 
 
