@@ -60,10 +60,10 @@ def process(file):
             process_path, binary_name, command_line = parse_4688(d, command_dict, detection_list,command_regex, re_list, re_dict, d)
             if process_path != 0 :
                 detection_base = {}
-                print(f"Potentially suspicious binary execution: {command_data['keys'][command_dict[binary_name]]['name']}")
+                print(f"Potentially Suspicious Binary Execution: {command_data['keys'][command_dict[binary_name]]['name']}")
                 detection_base['Name'] = command_data['keys'][command_dict[binary_name]]['name']
                 detection_base['Reason'] = command_data['keys'][command_dict[binary_name]]['description']
-                detection_base['File Path'] = "NA"
+                detection_base['File Path'] = str(process_path)
                 detection_base['Registry Path'] = "NA"
                 detection_base['MITRE Tactic'] = command_data['keys'][command_dict[binary_name]]['tactic']
                 detection_base['MITRE Technique'] = command_data['keys'][command_dict[binary_name]]['technique']
@@ -97,21 +97,23 @@ def parse_4688(row, command_dict, detection_list, command_regex, re_list, re_dic
         return 0,0,0
 
 def regex_4688(commandline, detection_list,command_regex, re_list, re_dict, d):
-    matches = []
+    matches = {}
     for r in re_list:
-        matches += re.findall(r,commandline)
-    if len(matches) != 0:
-        detection_base = {}
-        print(f"Regex Detection for Suspicous Commandline: {command_regex['keys'][re_dict[commandline]]['name']}")
-        detection_base['Name'] = command_regex['keys'][re_dict[commandline]]['name']
-        detection_base['Reason'] = command_regex['keys'][re_dict[commandline]]['description']
-        detection_base['File Path'] = "NA"
-        detection_base['Registry Path'] = "NA"
-        detection_base['MITRE Tactic'] = command_regex['keys'][re_dict[commandline]]['tactic']
-        detection_base['MITRE Technique'] = command_regex['keys'][re_dict[commandline]]['technique']
-        detection_base['Risk'] = command_regex['keys'][re_dict[commandline]]['risk']
-        detection_base['Details'] = str(d)
-        detection_list.append(detection_base)
+        matches[r] = re.findall(r,commandline)
+
+    for k,v in matches.items():
+        if len(v) != 0:
+            detection_base = {}
+            print(f"Regex Detection for Suspicious Commandline: {command_regex['keys'][re_dict[k]]['name']}")
+            detection_base['Name'] = command_regex['keys'][re_dict[k]]['name']
+            detection_base['Reason'] = command_regex['keys'][re_dict[k]]['description']
+            detection_base['File Path'] = str(commandline)
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = command_regex['keys'][re_dict[k]]['tactic']
+            detection_base['MITRE Technique'] = command_regex['keys'][re_dict[k]]['technique']
+            detection_base['Risk'] = command_regex['keys'][re_dict[k]]['risk']
+            detection_base['Details'] = str(d)
+            detection_list.append(detection_base)
 
 def read_eventlog(evt_log):
     #fields = ['Name', 'Reason','File Path','Registry Path','MITRE Tactic','MITRE Technique','Risk','Details']
