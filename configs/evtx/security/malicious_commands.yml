@@ -1,0 +1,169 @@
+keys:
+  1:
+    command: tasklist
+    name: tasklist command was executed on the machine.
+    description: Attackers often recon active processes as a first-step.
+    tactic: Execution
+    technique: T1057
+    risk: Low
+  2:
+    command: ver
+    name: ver command was executed on the machine.
+    description: Attackers often recon Windows version as an initial step.
+    tactic: Execution
+    technique: T1059.003
+    risk: Low
+  3:
+    command: ipconfig
+    name: ipconfig command was executed on the machine.
+    description: Attackers often recon network capabilities as an initial step.
+    tactic: Execution
+    technique: T1059.003
+    risk: Low
+  4:
+    command: systeminfo
+    name: systeminfo command was executed on the machine.
+    description: Attackers often recon system configurations as an initial step.
+    tactic: Execution
+    technique: T1059.003
+    risk: Low
+  5:
+    command: net time
+    name: net time command was executed on the machine.
+    description: Attackers often recon system time configurations as an initial step.
+    tactic: Execution
+    technique: T1059.003
+    risk: Low
+  6:
+    command: netstat
+    name: netstat command was executed on the machine.
+    description: Attackers often recon network connections as an initial step.
+    tactic: Execution
+    technique: T1059.003
+    risk: Low
+  7:
+    command: whoami
+    name: whoami command was executed on the machine.
+    description: Attackers often recon local user information as an initial step.
+    tactic: Execution
+    technique: T1059.003
+    risk: Low
+  8:
+    command: net start
+    name: net start command was executed on the machine.
+    description: Attackers often recon local user information as an initial step.
+    tactic: Execution
+    technique: T1059.003
+    risk: Low
+  9:
+    command: qprocess
+    name: qprocess command was executed on the machine.
+    description: Attackers often recon local process information as an initial step.
+    tactic: Execution
+    technique: T1059.003
+    risk: Low
+  10:
+    command: net view
+    name: net view command was executed on the machine.
+    description: Attackers often recon network-based information as an initial step.
+    tactic: Discovery
+    technique: T1059.003
+    risk: Low
+  11:
+    command: net use
+    name: net use command was executed on the machine.
+    description: Attackers often recon network-based information as an initial step.
+    tactic: Discovery
+    technique: T1059.003
+    risk: Low
+  12:
+    command: net localgroup
+    name: net localgroup command was executed on the machine.
+    description: Attackers often recon host-based information as an initial step.
+    tactic: Discovery
+    technique: T1059.003
+    risk: Low
+  13:
+    command: net share
+    name: net share command was executed on the machine.
+    description: Attackers often recon network-based information as an initial step.
+    tactic: Discovery
+    technique: T1059.003
+    risk: Low
+  14:
+    command: net config
+    name: net config command was executed on the machine.
+    description: Attackers often recon network-based information as an initial step.
+    tactic: Discovery
+    technique: T1059.003
+    risk: Low
+  15:
+    command: wmic
+    name: wmic command was executed on the machine.
+    description: Attackers often WMI to perform persistence or lateral movement techniques.
+    tactic: Execution
+    technique: T1059.003
+    risk: Medium
+  16:
+    command: at
+    name: at command was executed on the machine.
+    description: Attackers often use at to perform persistence or lateral movement via remotely registered tasks.
+    tactic: Execution
+    technique: T1059.003
+    risk: Medium
+  17:
+    command: netsh
+    name: netsh advfirewall command was executed on the machine.
+    description: Attackers often query firewall rules in order to understand what is allowed.
+    tactic: Execution
+    technique: T1059.003
+    risk: Medium
+  18:
+    command: rundll32
+    name: rundll32 command was executed on the machine.
+    description: Attackers often abuse rundll32 to perform process or thread injection of DLLs.
+    tactic: Execution
+    technique: T1059.003
+    risk: Medium
+  19:
+    command: reg
+    name: reg command was executed on the machine.
+    description: Attackers often abuse reg to perform registry querying or modification.
+    tactic: Execution
+    technique: T1059.003
+    risk: Medium
+  20:
+    command: bitsadmin
+    name: bitsadmin command was executed on the machine.
+    description: Attackers often abuse bitsadmin to execute or download additional malware.
+    tactic: Execution
+    technique: T1059.003
+    risk: Medium
+  21:
+    command: regsvr32
+    name: regsvr32 command was executed on the machine.
+    description: Attackers often abuse regsvr32 to execute or download additional malware.
+    tactic: Execution
+    technique: T1059.003
+    risk: Medium
+  22:
+    command: certutil
+    name: certutil command was executed on the machine.
+    description: Attackers often abuse certutil to execute or download additional malware.
+    tactic: Execution
+    technique: T1059.003
+    risk: Medium
+  23:
+    command: scrcons
+    name: scrcons command was executed on the machine.
+    description: Attackers often abuse scrcons to execute or download additional malware.
+    tactic: Execution
+    technique: T1059.003
+    risk: Medium
+  24:
+    command: mshta
+    name: mshta command was executed on the machine.
+    description: Attackers often abuse mshta to execute or download additional malware.
+    tactic: Execution
+    technique: T1059.003
+    risk: Medium
