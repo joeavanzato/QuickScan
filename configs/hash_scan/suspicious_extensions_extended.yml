@@ -5,7 +5,7 @@ paths:
    - '%HOMEDRIVE%\ProgramData'
    - '%SYSTEMROOT%'
 extensions:
-   # Files often used by malware
+   # Executable-type Files often used by malware
    - '.hta'
    - '.js'  #Many False Positives in most installations.
    - '.vbs'
@@ -22,8 +22,8 @@ extensions:
    - '.vb'
    - '.pdf'
    - '.jar'
-   - '.tmp'
-   - '.inf'
+   #- '.tmp'
+   #- '.inf'
    - '.msi'
    - '.msp'
    - '.gadget'
