@@ -2,12 +2,15 @@
  Hunting for Abnormalities
 
 ### Scheduled Tasks
-* Single Character Binaries
-* Binaries in User Locations 
+* Abnormally Short-Named Binaries [DONE]
+* Potentially Dangerous Extension [DONE]
+* Binaries in User Locations
 * Recently Added
 * 
 
 ### Services
+* Abnormally Short-Named Binaries [DONE]
+* Starting from User Directory [DONE]
 * 
 
 ### Registry
@@ -16,7 +19,28 @@
 * Debug
 * ShimDB
 
+### Suspicious Files Names
+* Checking certain paths for known-dangerous redteam/malware file names [DONE]
+*
+
+### Suspicious Extensions
+* Checking certain paths for known-dangerous extensions [DONE]
+*
+
 ### AmCache 
+
+### False Extensions
+* Recursively check certain paths for file names with a trailing space which may be an obfuscation technique [DONE]
+* Check certain files and compare current extension with known magic byte identifier
+
+### Prefetch
+* Checking for known-dangerous redteam/malware names file Names [DONE]
+* 
+
+### Network Connections
+* Checking Active TCP Connections for suspicious properties (SMB, RDP, TelNet, SSH, WinRM) [DONE]
+* Checking qwinsta/quser for Active Connections
+* 
 
 ### NTUSER.DAT Analysis
 
@@ -26,12 +50,6 @@
 
 ### AppData
 
-### Suspicious Files Names
-
-### Suspicious Extensions
-
-### PreFetch Analysis
-
 ### Yara Scan
 
 ### Known Malicious Hashes
@@ -39,14 +57,19 @@
 ### Known Suspicious IP Addresses
 
 ### PowerShell History
+* Checking for dangerous commands/modules in history files
 
 ### PowerShell Script Logging
+* Checking for dangerous commands/modules in Event Logs
 
 ### Execution Logging
+* Checking for dangerous command-line usage in Event Logs
 
-### Users Added
-
-### Group Modifications
+### Security Event Log
+* Checking for Users Added to the System
+* Checking for localgroup Modifications, Administrator Adds, etc
+* Checking for brute-force style activity
+* Checking for historical network logons
 
 ### Active Processes
 
