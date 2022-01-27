@@ -1,5 +1,6 @@
 import hashlib
 import logging
+import datetime
 
 def hash_file(file):
     chunk_size = 65536
@@ -18,7 +19,9 @@ def hash_file(file):
         return md5.hexdigest(), sha1.hexdigest(), sha256.hexdigest()
     except PermissionError:
         print(f"PermissionError Accessing File: {file}")
+        logging.exception(str(datetime.datetime.now()) + f" Permission Error Hashing: {file}")
         return "ERROR", "ERROR","ERROR"
     except :
         print(f"General Error Hashing File: {file}")
+        logging.exception(str(datetime.datetime.now()) + f" General Error Hashing: {file}")
         return "ERROR", "ERROR","ERROR"
