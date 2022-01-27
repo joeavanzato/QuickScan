@@ -16,6 +16,7 @@ import configs.tasks.start
 import configs.false_extensions.start
 import configs.network_connections.start
 import configs.startup.start
+import configs.prefetch.start
 
 def parse_args():
     arguments = {}
@@ -67,6 +68,8 @@ def launch_configs(args):
         configs.network_connections.start.launch()
     if 'startup' in args['configs']:
         configs.startup.start.launch()
+    if 'prefetch' in args['configs']:
+        configs.prefetch.start.launch()
 
 def start_detections(file, fields):
     with open(file, 'w', newline='', encoding='utf-8') as f:
