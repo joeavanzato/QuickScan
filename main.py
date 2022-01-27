@@ -7,7 +7,6 @@ import datetime
 import csv
 
 import configuration_data
-
 import configs.files.start
 import configs.services.start
 import configs.tasks.start
@@ -17,7 +16,6 @@ import configs.startup.start
 import configs.prefetch.start
 import configs.hash_scan.start
 import configs.evtx.security.start
-
 import helpers.update_loki
 
 
@@ -27,11 +25,13 @@ def parse_args():
     parser = argparse.ArgumentParser(usage='''
     ### QuickScan ###
     Rapidly Triage Windows Hosts for Suspicious Activity and Artifacts.
+    
 
     Usage Examples:
     quickscan.exe 
     
-    quickscan.exe -c 
+    quickscan.exe -c prefetch,network_connections,services,startup
+    
     ''')
     parser.add_argument("-c", "--configs", help="Which Configurations to Run - if left blank, will run all.",
                         required=False, nargs=1, type=str)
@@ -92,12 +92,22 @@ def build_hashset():
         helpers.update_loki.launch()
 
 def main():
-    print('''
+
+    logo = '''
    ___       _    _    ___               
   / _ \ _  _(_)__| |__/ __| __ __ _ _ _  
  | (_) | || | / _| / /\__ \/ _/ _` | ' \ 
   \__\_\\_,_|_\__|_\_\|___/\__\__,_|_||_|                           
-    ''')
+    '''
+    logo2 = '''
+░██████╗░██╗░░░██╗██╗░█████╗░██╗░░██╗░██████╗░█████╗░░█████╗░███╗░░██╗
+██╔═══██╗██║░░░██║██║██╔══██╗██║░██╔╝██╔════╝██╔══██╗██╔══██╗████╗░██║
+██║██╗██║██║░░░██║██║██║░░╚═╝█████═╝░╚█████╗░██║░░╚═╝███████║██╔██╗██║
+╚██████╔╝██║░░░██║██║██║░░██╗██╔═██╗░░╚═══██╗██║░░██╗██╔══██║██║╚████║
+░╚═██╔═╝░╚██████╔╝██║╚█████╔╝██║░╚██╗██████╔╝╚█████╔╝██║░░██║██║░╚███║
+░░░╚═╝░░░░╚═════╝░╚═╝░╚════╝░╚═╝░░╚═╝╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚══╝
+'''
+    print(logo2)
     print("https://github.com/joeavanzato/QuickScan")
     args = parse_args()
     log_file = "quickscan_log.log"
