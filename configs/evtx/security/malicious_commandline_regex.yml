@@ -1,0 +1,53 @@
+# References
+# https://github.com/chenerlich/FCL
+
+keys:
+  1:
+    command: '.*certutil.exe (.*-decode.*)'
+    name: certutil -decode was used, potentially to deobfuscate malware.
+    description: Attackers often certutil -decode to retrieve second-stage payloads.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  2:
+    command: '^(?=.*\bbypass\b)(?=.*\bNet\.WebClient\b)(?=.*\bDownloadFile\b)(?=.*\biex\b).*$'
+    name: PowerShell was used to download a file.
+    description: Attackers often abuse PowerShell features for malicious actions.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  3:
+    command: '^(?=.*\bNonInteractive\b)(?=.*\bbypass\b)(?=.*\bASCII\.GetString\b)(?=.*\bHKCU\b).*$'
+    name: PowerShell was used to convert a string from memory.
+    description: Attackers often abuse PowerShell features for malicious actions.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  4:
+    command: '^(?=.*\bWMIobject\b)(?=.*\bSCM\b)(?=.*\bIEX\b)(?=.*\bDownloadString\b).*$'
+    name: PowerShell was used with WMI/SCM to download data.
+    description: Attackers often abuse PowerShell features for malicious actions.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  5:
+    command: '^(?=.*\bRuntIME\.InteroPsERvICEs\.marshAl\b)(?=.*\bGeTMEmbERS()\b)(?=.*\bSeCureSTrINg\b)(?=.*\bTOStrIng\b)(?=.*\bjoIn\b).*$'
+    name: A commandline resembling Emotet was detected.
+    description: Attackers often abuse PowerShell features for malicious actions.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  6:
+    command: '^(?=.*\bjavascript:\b)(?=.*\bWScript\.Shell\b)(?=.*\bRegRead\b)(?=.*\beval\b).*$'
+    name: A commandline resembling WScript/MSHTA abuse was detected.
+    description: Attackers often abuse WScript features for malicious actions.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  7:
+    command: '^(?=.*\bjavascript\b)(?=.*\bRunHTMLApplication\b)(?=.*\bGetObject\b)(?=.*\bscript:http\b).*$'
+    name: A commandline resembling rundll32 abuse was detected.
+    description: Attackers often abuse rundll32 features for malicious actions.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
