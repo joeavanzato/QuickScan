@@ -3,6 +3,15 @@ import csv
 def write_detection(file, fields, dict_list):
     """
     Provide a file path, field list and list of dicts containing appropriate field values.
+    Dicts should have the following fields, which are also passed to this function as a list as 'fields';
+        'Name'
+        'Reason'
+        'File Path'
+        'Registry Path'
+        'MITRE Tactic'
+        'MITRE Technique'
+        'Risk'
+        'Details'
     :param file:
     :param fields:
     :param dict_list:
