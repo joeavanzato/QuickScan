@@ -7,6 +7,7 @@ import datetime
 import csv
 
 import configuration_data
+
 import configs.files.start
 import configs.services.start
 import configs.tasks.start
@@ -15,7 +16,11 @@ import configs.network_connections.start
 import configs.startup.start
 import configs.prefetch.start
 import configs.hash_scan.start
+import configs.evtx.security.start
+
 import helpers.update_loki
+
+
 
 def parse_args():
     arguments = {}
@@ -71,6 +76,9 @@ def launch_configs(args):
         configs.prefetch.start.launch()
     if 'hash_scan' in args['configs']:
         configs.hash_scan.start.launch()
+    if 'evtx' in args['configs']:
+        configs.evtx.security.start.launch()
+
 
 def start_detections(file, fields):
     with open(file, 'w', newline='', encoding='utf-8') as f:
