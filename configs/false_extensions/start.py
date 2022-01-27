@@ -1,9 +1,6 @@
-import yaml
 import os
-import sys
 import logging
 import datetime
-import glob
 
 import configuration_data
 import helpers.write_detection
@@ -48,7 +45,7 @@ def extension_scan():
             for file in f:
                 name, extension = os.path.splitext(file)
                 extension = extension.replace(".", "").lower()
-                if name.endswith(" "):# in ext_data['extensions'] and not root in allow_list:
+                if name.endswith(" "):
                     detection_base = {}
                     full_path = os.path.join(root, file)
                     print(f"Found Suspicious File Name with Trailing Space: {full_path}")
