@@ -15,6 +15,7 @@ import configs.services.start
 import configs.tasks.start
 import configs.false_extensions.start
 import configs.network_connections.start
+import configs.startup.start
 
 def parse_args():
     arguments = {}
@@ -64,6 +65,8 @@ def launch_configs(args):
         configs.false_extensions.start.launch()
     if 'network_connections' in args['configs']:
         configs.network_connections.start.launch()
+    if 'startup' in args['configs']:
+        configs.startup.start.launch()
 
 def start_detections(file, fields):
     with open(file, 'w', newline='', encoding='utf-8') as f:
@@ -72,7 +75,12 @@ def start_detections(file, fields):
 
 
 def main():
-    print("### QuickScan ###")
+    print('''
+   ___       _    _    ___               
+  / _ \ _  _(_)__| |__/ __| __ __ _ _ _  
+ | (_) | || | / _| / /\__ \/ _/ _` | ' \ 
+  \__\_\\_,_|_\__|_\_\|___/\__\__,_|_||_|                           
+    ''')
     print("https://github.com/joeavanzato/QuickScan")
     args = parse_args()
     log_file = "quickscan_log.log"
