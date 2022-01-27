@@ -1,8 +1,5 @@
 import os
 import traceback
-import csv
-import json
-import yaml
 import sys
 import argparse
 import logging
@@ -17,6 +14,8 @@ import configs.false_extensions.start
 import configs.network_connections.start
 import configs.startup.start
 import configs.prefetch.start
+import configs.hash_scan.start
+import helpers.update_loki
 
 def parse_args():
     arguments = {}
@@ -70,12 +69,19 @@ def launch_configs(args):
         configs.startup.start.launch()
     if 'prefetch' in args['configs']:
         configs.prefetch.start.launch()
+    if 'hash_scan' in args['configs']:
+        configs.hash_scan.start.launch()
 
 def start_detections(file, fields):
     with open(file, 'w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
 
+
+def build_hashset():
+    if not os.path.isfile('iocs\\loki_hashlist.txt'):
+        print("Updating Hash Set from Loki Signature Repository...")
+        helpers.update_loki.launch()
 
 def main():
     print('''
@@ -96,6 +102,7 @@ def main():
     configuration_data.fields = ['Name', 'Reason','File Path','Registry Path','MITRE Tactic','MITRE Technique','Risk','Details']
     configuration_data.detection_csv = 'detection_output.csv'
     start_detections(configuration_data.detection_csv, configuration_data.fields)
+    build_hashset()
     launch_configs(args)
 
 
