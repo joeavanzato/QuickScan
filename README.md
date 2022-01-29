@@ -46,10 +46,16 @@ Uses some awesome existing repositories:
 
 ### Network Connections
 * Checking Active TCP Connections for suspicious properties (SMB, RDP, TelNet, SSH, WinRM) [DONE]
-* Checking qwinsta/quser for Active Connections
+* Checking qwinsta/quser/qprocess for Suspicious Active Connections
 * 
 
 ### NTUSER.DAT Analysis
+* Suspicious Recently Opened Files
+* Suspicious File Execution Artifacts
+* Files Executed with 'Run'
+* Internet Access to Suspicious TLDs
+* Suspicious Typed Paths for Windows
+* Recently Opened Office Documents with Suspicious Extension
 
 ### Internet History
 * Check for suspicious TLDs
@@ -60,7 +66,7 @@ Uses some awesome existing repositories:
 * YARA Scan suspicious / active processes
 
 ### Known Malicious Hashes
-* Scanning dangerous extension types across certain paths for known malicious hashes [PARTIAL]
+* Scanning dangerous extension types across certain paths for known malicious hashes [LOGIC DONE]
   * Done using Loki Signature Base currently, updated at runtime.
 * TODO: Find additional high-fidelity datasets for integration.
 
@@ -68,19 +74,17 @@ Uses some awesome existing repositories:
 * Check active network connections for known C2/Evil
 
 ### PowerShell History
-* Checking for dangerous commands/modules in history files
+* Checking for dangerous commands/modules in history files [LOGIC DONE]
 
-### PowerShell Script Logging
-* Checking for dangerous commands/modules in Event Logs
-
-### Execution Logging
-* Checking for dangerous command-line usage in Event Logs
+### PowerShell Event Log
+* Checking for dangerous commands/module presence
 
 ### Security Event Log
 * Checking for Users Added to the System
 * Checking for localgroup Modifications, Administrator Adds, etc
 * Checking for brute-force style activity
 * Checking for historical network logons
+* Checking for dangerous command-line usage [LOGIC DONE]
 
 ### Active Processes
 * YARA scan active processes with relevant rules
