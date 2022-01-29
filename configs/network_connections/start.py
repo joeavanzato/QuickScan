@@ -24,6 +24,8 @@ def launch():
 def process_services(file):
     #fields = ['Name', 'Reason','File Path','Registry Path','MITRE Tactic','MITRE Technique','Risk','Details']
     data = helpers.csv_parse.parse(file)
+    with open('iocs\\primary_ip_list.txt', 'r') as f:
+        mal_ips = f.readlines()
     detection_list = []
     for d in data:
         local_ip = d['LocalAddress']
@@ -32,6 +34,19 @@ def process_services(file):
         remote_port = d['RemotePort']
         state = d['State']
         process_name = d['Process']
+        if remote_ip in mal_ips:
+            print(f"Connection to Suspicious IP Address: {local_ip}:{local_port} <-> {remote_ip}:{remote_port}")
+            detection_base = {}
+            detection_base['Name'] = "Connection to Suspicious IP Address"
+            detection_base['Reason'] = "A connection to a known suspicious or malicious IP address was detected."
+            detection_base['File Path'] = "NA"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Command and Control"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "High"
+            detection_base['Details'] = str(d)
+            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            detection_list.append(detection_base)
         if state == "Listen" and remote_port == ["3389"] and process_name == 'svchost':
             print(f"RDP Listening for Connections")
             detection_base = {}
