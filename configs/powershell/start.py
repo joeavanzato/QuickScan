@@ -69,6 +69,7 @@ def regex_check(line, detection_list, regex_data, re_list, re_dict):
             detection_base['MITRE Technique'] = regex_data['keys'][re_dict[k]]['technique']
             detection_base['Risk'] = regex_data['keys'][re_dict[k]]['risk']
             detection_base['Details'] = str(line)
+            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
 
 
