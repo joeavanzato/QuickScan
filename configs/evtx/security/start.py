@@ -12,6 +12,8 @@ import helpers.execute
 import helpers.csv_parse
 import helpers.write_detection
 
+# TODO - Parsing/Alerting Logic for 4624, 4648, Local Group Adds, etc.
+
 def launch():
     logging.info(str(datetime.datetime.now()) + " Starting  'evtx\\security' Config")
     print("STARTING evtx\\security SCAN")
@@ -57,7 +59,7 @@ def process(file):
 
     for d in data:
         if d['Id'] == '4688':
-            process_path, binary_name, command_line = parse_4688(d, command_dict, detection_list,command_regex, re_list, re_dict, d)
+            process_path, binary_name, command_line = parse_4688(d, command_dict, detection_list,command_regex, re_list, re_dict)
             if process_path != 0 :
                 detection_base = {}
                 print(f"Potentially Suspicious Binary Execution: {command_data['keys'][command_dict[binary_name]]['name']}")
@@ -73,11 +75,21 @@ def process(file):
                 detection_base['Risk'] = command_data['keys'][command_dict[binary_name]]['risk']
                 detection_base['Details'] = str(d)
                 detection_list.append(detection_base)
+        if d['Id'] == '4624':
+            remote_host, user, logon_type = parse_4624(d)
 
     helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)
 
+def parse_4624(row): #TODO
+    ret = 0
+    rows = row['Message'].split("\n")
+    for row in rows:
+        row = row.strip()
+        if row.startswith('Logon Type'):
+            print(row)
 
-def parse_4688(row, command_dict, detection_list, command_regex, re_list, re_dict, d):
+
+def parse_4688(row, command_dict, detection_list, command_regex, re_list, re_dict):
     ret = 0
     rows = row['Message'].split("\n")
     for row in rows:
@@ -92,7 +104,7 @@ def parse_4688(row, command_dict, detection_list, command_regex, re_list, re_dic
         elif row.startswith("Process Command Line"):
             process_cl = row.split(":", 1)[1].strip()
             if process_cl != "" and ret == 0: #If we aren't already returning a detection and the command-line isn't blank AKA IS logging - should probably do GP check for appropriate policy instead.
-                regex_4688(process_cl, detection_list,command_regex,  re_list, re_dict, d)
+                regex_4688(process_cl, detection_list,command_regex,  re_list, re_dict, row)
             #print(process_cl)
     if ret == 1:
         return process_name,binary_name, process_cl
@@ -102,7 +114,7 @@ def parse_4688(row, command_dict, detection_list, command_regex, re_list, re_dic
 def regex_4688(commandline, detection_list,command_regex, re_list, re_dict, d):
     matches = {}
     for r in re_list:
-        matches[r] = re.findall(r,commandline)
+        matches[r] = re.findall(r,commandline, re.IGNORECASE)
 
     for k,v in matches.items():
         if len(v) != 0:
