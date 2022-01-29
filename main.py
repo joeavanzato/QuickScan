@@ -20,6 +20,7 @@ import configs.startup.start
 import configs.prefetch.start
 import configs.hash_scan.start
 import configs.evtx.security.start
+import configs.evtx.powershell_operational.start
 import configs.powershell.start
 
 import helpers.ip_updater
@@ -90,6 +91,7 @@ def launch_configs(args):
         configs.hash_scan.start.launch()
     if 'evtx' in args['configs']:
         configs.evtx.security.start.launch()
+        configs.evtx.powershell_operational.start.launch()
     if 'powershell' in args['configs']:
         configs.powershell.start.launch()
 
@@ -128,6 +130,17 @@ def build_ips():
     url_list['emergingthreats_bots'] = 'http://rules.emergingthreats.net/open/suricata/rules/botcc.rules'
     url_list['emergingthreats_compromised2'] = 'http://rules.emergingthreats.net/open/suricata/rules/compromised-ips.txt'
     url_list['sblam_blacklist'] = 'https://sblam.com/blacklist.txt'
+    url_list['tor_exits'] = 'https://raw.githubusercontent.com/SecOps-Institute/Tor-IP-Addresses/master/tor-exit-nodes.lst'
+    url_list['tor_nodes'] = 'https://raw.githubusercontent.com/SecOps-Institute/Tor-IP-Addresses/master/tor-nodes.lst'
+    url_list['binary_defense'] = 'https://www.binarydefense.com/banlist.txt'
+    url_list['maxmind_highrisk'] = 'https://www.maxmind.com/en/high-risk-ip-sample-list'
+    url_list['myip_blacklist'] = 'https://myip.ms/files/blacklist/htaccess/latest_blacklist.txt'
+    url_list['firehol_proxies'] = 'https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/proxyspy_1d.ipset'
+    url_list['scriptzteam_badips'] = 'https://raw.githubusercontent.com/scriptzteam/badIPS/main/ips.txt'
+    url_list['talos_intel'] = 'https://www.talosintelligence.com/documents/ip-blacklist'
+    url_list['torproject'] = 'https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=1.1.1.1'
+    url_list['urlhaus_urls'] = 'https://urlhaus.abuse.ch/downloads/text/'
+    url_list['loki_signatures'] = 'https://raw.githubusercontent.com/Neo23x0/signature-base/master/iocs/c2-iocs.txt'
     helpers.ip_updater.launch(url_list)
 
 
@@ -158,6 +171,7 @@ def main():
 '''
     print(logo2)
     print("https://github.com/joeavanzato/QuickScan")
+    print("Run As Administrator!") #TODO - Check Admin - PyUAC works for elevation or other
     args = parse_args()
     log_file = "quickscan_log.log"
     logging.basicConfig(filename=log_file, level=logging.DEBUG)
