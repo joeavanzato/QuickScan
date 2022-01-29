@@ -70,7 +70,6 @@ extensions:
    - '.msh2xml'
    - '.lnk'
    - '.scf'
-   -
    # Ransomware Extensions
    - '.micro'
    - '.aaa'
