@@ -106,6 +106,8 @@ def start_detections(file, fields):
         writer.writeheader()
 
 def build_ips():
+    # TODO - Add More Threat Feeds / Improve Fidelity
+    # Primarily sourced from http://www.covert.io/threat-intelligence/
     """
     Provide a dictionary with file_name reference and URL to ip_updater.launch()
      - typically a line-delimited text-based source for malicious IP addresses.

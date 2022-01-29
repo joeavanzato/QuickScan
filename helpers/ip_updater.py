@@ -5,6 +5,12 @@ import re
 
 
 def launch(url_list):
+    """
+    Receive dictionary containing file_name reference and URL as k,v pair - pass each K,V to update_list function if a file
+    reference doesn't already exist.
+    :param url_list:
+    :return:
+    """
     if not os.path.isdir('iocs'):
         try:
             os.mkdir('iocs')
@@ -22,6 +28,13 @@ def launch(url_list):
             print(f'Skipping IP Update for {url}')
 
 def update_list(url, filename, ip_compiled):
+    """
+    Receive a URL, Filename and basic compiled regex for IP addresses - download the relevant data and push it to the primary IOC file for IPs.
+    :param url:
+    :param filename:
+    :param ip_compiled:
+    :return:
+    """
     try:
         list = requests.get(url)
     except:
