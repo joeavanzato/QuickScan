@@ -60,7 +60,7 @@ keys:
     technique: T1057
     risk: Medium
   9:
-    command: '(?:[A-Za-z=0-9+/]){200,}'
+    command: '(''|")[0,1](?:[A-Za-z=0-9+/]){200,}(''|")[0,1]'
     name: Commandline containing very long Base64 String
     description: Attackers often abuse Base64 encoding to avoid static detections.
     tactic: Defense Evasion
@@ -75,3 +75,73 @@ keys:
     technique: T1140
     risk: High
     test: 'C:\afoabngf\aogfbn\cmd.exe /c set x=w@sc@r@i@pt /e:j@sc@rip@t .. echo %x:@=%|cmd'
+  11:
+    command: '.*net.*localgroup.*administrators.*'
+    name: Local Administrators were queries.
+    description: Attackers often recon local admins for privilege escalation checks.
+    tactic: Reconnaissance
+    technique: T1057
+    risk: Medium
+  12:
+    command: '.*wmic qfe.*'
+    name: Patch Level was Queried.
+    description: Attackers often recon the OS Patch Level.
+    tactic: Reconnaissance
+    technique: T1057
+    risk: Low
+  13:
+    command: '.*dsquery group "ou=Domain Admins,dc=.*,dc=.*".*'
+    name: DSQUERY tool was used to check for Domain Admins.
+    description: Attackers often abuse dsquery for Domain-Level recon.
+    tactic: Reconnaissance
+    technique: T1057
+    risk: Low
+  14:
+    command: '.*net (localgroup|user|group "domain admins").*'
+    name: net was used to perform a suspicious query.
+    description: Attackers often query domain and local items with net as an initial step.
+    tactic: Reconnaissance
+    technique: T1057
+    risk: Low
+  15:
+    command: '.*reg.*(add|query).*(SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\(Run|RunOnce|RunServices)|\\mscfile\\shell\\open\\command|Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\control.exe|\\Software\\Classes\\.*\\shell\\runas\\command\\isolatedCommand).*'
+    name: reg was used to perform a suspicious query or add.
+    description: Attackers often utilize reg for execution and privilege escalation.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  16:
+    command: '.*(Start-Process|cmd.exe|cmd).*eventvwr.msc.*'
+    name: Event Viewer was opened.
+    description: Attackers often utilize built-in Event Viewer for understanding blue-team visibility.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  17:
+    command: '.*cmstp.*/s.*\.inf.*'
+    name: Potential CMSTP abuse.
+    description: Attackers often abuse cmstp for execution and privilege escalation techniques.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  18:
+    command: '.*(csc|csc\.exe) .*/out:.*\.exe.*'
+    name: Potential CSC abuse.
+    description: Attackers often abuse csc for local code compilation of malicious binaries.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  19:
+    command: '.*(hh|hh\.exe) .*\.chm.*'
+    name: Potential HH abuse.
+    description: Attackers often abuse HH with .CHM files for execution.
+    tactic: Execution
+    technique: T1057
+    risk: Medium
+  20:
+    command: '.*(export .*_proxy=.*|netsh interface portproxy add).*'
+    name: Potential Proxy Setting\Abuse.
+    description: Attackers may attempt to alter system proxy settings..
+    tactic: Execution
+    technique: T1057
+    risk: Medium
