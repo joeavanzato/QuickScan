@@ -1,3 +1,7 @@
+
+# TODO - Add UAC Elevation / Admin Check
+
+
 import os
 import traceback
 import sys
@@ -16,6 +20,7 @@ import configs.startup.start
 import configs.prefetch.start
 import configs.hash_scan.start
 import configs.evtx.security.start
+import configs.powershell.start
 import helpers.update_loki
 
 
@@ -78,6 +83,8 @@ def launch_configs(args):
         configs.hash_scan.start.launch()
     if 'evtx' in args['configs']:
         configs.evtx.security.start.launch()
+    if 'powershell' in args['configs']:
+        configs.powershell.start.launch()
 
 
 def start_detections(file, fields):
