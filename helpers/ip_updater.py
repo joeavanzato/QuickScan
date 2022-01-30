@@ -26,6 +26,12 @@ def launch(url_list):
             update_list(url, name, ip_compiled)
         else:
             print(f'Skipping IP Update for {url}')
+    i = 0
+    # TODO - Deduplication of IP Addresses
+    with open('iocs\\primary_ip_list.txt') as f:
+        for line in f:
+            i += 1
+    print(f"{i} IPs updated for usage")
 
 def update_list(url, filename, ip_compiled):
     """
