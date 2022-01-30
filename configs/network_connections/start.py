@@ -24,8 +24,11 @@ def launch():
 def process_services(file):
     #fields = ['Name', 'Reason','File Path','Registry Path','MITRE Tactic','MITRE Technique','Risk','Details']
     data = helpers.csv_parse.parse(file)
-    with open('iocs\\primary_ip_list.txt', 'r') as f:
-        mal_ips = f.readlines()
+    try:
+        with open('iocs\\primary_ip_list.txt', 'r') as f:
+            mal_ips = f.readlines()
+    except:
+        mal_ips = []
     detection_list = []
     for d in data:
         local_ip = d['LocalAddress']
