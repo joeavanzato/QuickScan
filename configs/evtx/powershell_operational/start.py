@@ -56,7 +56,7 @@ def process(file):
     re_dict = {}
     for item in command_regex['keys']:
         re_item = command_regex['keys'][item]['command']
-        print(re_item)
+        #print(re_item)
         re_list.append(re_item)
         re_dict[command_regex['keys'][item]['command']] = item #For reverse lookup in YAML
 
