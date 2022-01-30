@@ -5,6 +5,9 @@ import logging
 import datetime
 import glob
 
+import configuration_data
+import helpers.write_detection
+
 def launch():
     logging.info(str(datetime.datetime.now()) + " Starting  'files' Config")
     print("STARTING FILE-NAME SCAN")
@@ -32,6 +35,7 @@ def read_configs():
 
 
 def name_scan(name_data):
+    detection_list = []
     logging.info(str(datetime.datetime.now()) + " Starting File Name Scan")
     path_list = []
     matches = []
@@ -47,6 +51,18 @@ def name_scan(name_data):
                     full_path = os.path.join(root, file)
                     print(f"Found Suspicious File Name: {full_path}")
                     matches.append(full_path)
+
+    for match in matches:
+        detection_base = {}
+        detection_base['Name'] = "Suspicious File Name"
+        detection_base['Reason'] = "A file with a suspicious name was detected."
+        detection_base['Registry Path'] = match
+        detection_base['MITRE Tactic'] = "Execution"
+        detection_base['MITRE Technique'] = "NA"
+        detection_base['Risk'] = "High"
+        detection_base['Details'] = "NA"
+        detection_list.append(detection_base)
+    helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)
     return path_list
 
 
@@ -55,6 +71,7 @@ def extension_scan(ext_data):
     path_list = []
     matches = []
     allow_list = []
+    detection_list = []
     for path in ext_data['allowlist']:
         expanded_path = os.path.expandvars(path)
         allow_list.append(expanded_path)
@@ -78,4 +95,16 @@ def extension_scan(ext_data):
                     full_path = os.path.join(root, file)
                     print(f"Found Suspicious File Extension: {full_path}")
                     matches.append(full_path)
+
+    for match in matches:
+        detection_base = {}
+        detection_base['Name'] = "Suspicious File Extension"
+        detection_base['Reason'] = "A file with a suspicious extension was detected."
+        detection_base['Registry Path'] = match
+        detection_base['MITRE Tactic'] = "Execution"
+        detection_base['MITRE Technique'] = "NA"
+        detection_base['Risk'] = "High"
+        detection_base['Details'] = "NA"
+        detection_list.append(detection_base)
+    helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)
     return path_list
