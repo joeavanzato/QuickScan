@@ -21,6 +21,7 @@ names:
      - 'powershell-rat'
      - 'rubeus'
      - 'sharpup'
+     - 'sharpgpoabuse'
      - 'seatbelt'
      - 'powerup'
      - 'safetykatz'
