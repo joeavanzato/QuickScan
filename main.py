@@ -22,6 +22,7 @@ import configs.hash_scan.start
 import configs.evtx.security.start
 import configs.evtx.powershell_operational.start
 import configs.powershell.start
+import configs.process.start
 
 import helpers.ip_updater
 import helpers.update_loki
@@ -87,13 +88,15 @@ def launch_configs(args):
         configs.startup.start.launch()
     if 'prefetch' in args['configs']:
         configs.prefetch.start.launch()
-    if 'hash_scan' in args['configs']:
-        configs.hash_scan.start.launch()
+    #if 'hash_scan' in args['configs']:
+    #    configs.hash_scan.start.launch()
     if 'evtx' in args['configs']:
         configs.evtx.security.start.launch()
         configs.evtx.powershell_operational.start.launch()
     if 'powershell' in args['configs']:
         configs.powershell.start.launch()
+    if 'process' in args['configs']:
+        configs.process.start.launch()
 
 
 def start_detections(file, fields):
