@@ -44,6 +44,13 @@ def process(file):
             print(e)
             logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\evtx\\security\\malicious_commandline_regex.yml")
             sys.exit(1)
+    try:
+        with open('iocs\\primary_ip_list.txt', 'r') as f:
+            mal_ips = f.readlines()
+    except:
+        mal_ips = []
+    ip_pattern = '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+    ip_compiled = re.compile(ip_pattern)
 
     re_list = []
     re_dict = {}
@@ -55,13 +62,13 @@ def process(file):
 
     for d in data:
         if d['Id'] in ['4104', '4103']:
-            parse(d, detection_list,command_regex, re_list, re_dict)
+            parse(d, detection_list,command_regex, re_list, re_dict, mal_ips, ip_compiled)
 
     helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)
 
 
 
-def parse(row, detection_list, command_regex, re_list, re_dict):
+def parse(row, detection_list, command_regex, re_list, re_dict, mal_ips, ip_compiled):
     matches = {}
     for r in re_list:
         matches[r] = re.findall(r,row['Message'], flags=re.IGNORECASE | re.MULTILINE)
@@ -71,13 +78,30 @@ def parse(row, detection_list, command_regex, re_list, re_dict):
             print(f"Regex Detection for Suspicious PowerShell {command_regex['keys'][re_dict[k]]['name']}")
             detection_base['Name'] = command_regex['keys'][re_dict[k]]['name']
             detection_base['Reason'] = command_regex['keys'][re_dict[k]]['description']
-            detection_base['File Path'] = row['Message']
+            detection_base['File Path'] = "NA"
             detection_base['Registry Path'] = "NA"
             detection_base['MITRE Tactic'] = command_regex['keys'][re_dict[k]]['tactic']
             detection_base['MITRE Technique'] = command_regex['keys'][re_dict[k]]['technique']
             detection_base['Risk'] = command_regex['keys'][re_dict[k]]['risk']
             detection_base['Details'] = str(row)
             detection_list.append(detection_base)
+
+    matches = ip_compiled.findall(row['Message'])
+    for match in matches:
+        if match in mal_ips:
+            print(f"Suspicious IP Found in PowerShell Logs: {match}")
+            detection_base['Name'] = "Suspicious IP Found in PowerShell Logs"
+            detection_base['Reason'] = "A known suspicious/malicious IP Address was found in Operational PowerShell Logging."
+            detection_base['File Path'] = f"{match}"
+            detection_base['Registry Path'] = "NA"
+            detection_base['MITRE Tactic'] = "Command and Control"
+            detection_base['MITRE Technique'] = "NA"
+            detection_base['Risk'] = "High"
+            detection_base['Details'] = str(row)
+            detection_list.append(detection_base)
+
+
+
 
 
 
