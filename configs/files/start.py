@@ -6,14 +6,15 @@ import datetime
 import glob
 
 import configuration_data
+import helpers.hash_file
 import helpers.write_detection
 
 def launch():
     logging.info(str(datetime.datetime.now()) + " Starting  'files' Config")
     print("STARTING FILE-NAME SCAN")
-    name_data, ext_data = read_configs()
-    file_list = name_scan(name_data)
-    ext_list = extension_scan(ext_data)
+    name_data, ext_data, hash_list = read_configs()
+    name_scan(name_data)
+    extension_scan(ext_data, hash_list)
 
 
 def read_configs():
@@ -31,7 +32,10 @@ def read_configs():
             print(e)
             logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\files\\suspicious_extensions.yml")
             sys.exit(1)
-    return name_data, extension_data
+    with open('iocs\\primary_hashlist.txt') as f:
+        hash_list = f.readlines()
+    logging.info(str(datetime.datetime.now()) + " Successfully Read: iocs\\primary_hashlist.txt")
+    return name_data, extension_data, hash_list
 
 
 def name_scan(name_data):
@@ -55,18 +59,18 @@ def name_scan(name_data):
     for match in matches:
         detection_base = {}
         detection_base['Name'] = "Suspicious File Name"
-        detection_base['Reason'] = "A file with a suspicious name was detected."
-        detection_base['Registry Path'] = match
+        detection_base['Reason'] = "A file with a known red-team/offensive or malicious name was detected."
+        detection_base['File Path'] = str(match)
+        detection_base['Registry Path'] = "NA"
         detection_base['MITRE Tactic'] = "Execution"
         detection_base['MITRE Technique'] = "NA"
         detection_base['Risk'] = "High"
         detection_base['Details'] = "NA"
         detection_list.append(detection_base)
     helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)
-    return path_list
 
 
-def extension_scan(ext_data):
+def extension_scan(ext_data, hashes):
     logging.info(str(datetime.datetime.now()) + " Starting File Extension Scan")
     path_list = []
     matches = []
@@ -75,7 +79,6 @@ def extension_scan(ext_data):
     for path in ext_data['allowlist']:
         expanded_path = os.path.expandvars(path)
         allow_list.append(expanded_path)
-        #print(expanded_path)
         for root, sub, f in os.walk(expanded_path):
             allow_list.append(root)
         #expanded_paths = glob.glob(expanded_path, recursive=True)
@@ -94,7 +97,22 @@ def extension_scan(ext_data):
                     #print(file)
                     full_path = os.path.join(root, file)
                     print(f"Found Suspicious File Extension: {full_path}")
-                    matches.append(full_path)
+                    md5, sha1, sha256 = helpers.hash_file.hash_file(full_path)
+                    if md5 != "ERROR" and (md5 in hashes or sha1 in hashes or sha256 in hashes):
+                        print(f"Found Suspicious File based on hash: {full_path}")
+                        detection_base = {}
+                        detection_base['Name'] = "File with Suspicious Hash"
+                        detection_base['Reason'] = "A file with a known suspicious or malicious hash was detected."
+                        detection_base['File Path'] = str(full_path)
+                        detection_base['Registry Path'] = "NA"
+                        detection_base['MITRE Tactic'] = "Execution"
+                        detection_base['MITRE Technique'] = "NA"
+                        detection_base['Risk'] = "High"
+                        detection_base['Details'] = f"SHA256: {sha256}"
+                        logging.info(str(datetime.datetime.now()) + f" Hash Match: {full_path}")
+                        detection_list.append(detection_base)
+                    else: #Don't alert twice on the same file
+                        matches.append(full_path)
 
     for match in matches:
         detection_base = {}
@@ -103,8 +121,7 @@ def extension_scan(ext_data):
         detection_base['Registry Path'] = match
         detection_base['MITRE Tactic'] = "Execution"
         detection_base['MITRE Technique'] = "NA"
-        detection_base['Risk'] = "High"
+        detection_base['Risk'] = "Low"
         detection_base['Details'] = "NA"
         detection_list.append(detection_base)
     helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)
-    return path_list
