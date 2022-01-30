@@ -63,12 +63,12 @@ def regex_check(line, detection_list, regex_data, re_list, re_dict):
             print(f"Regex Detection in PowerShell History File: {regex_data['keys'][re_dict[k]]['name']}: {line}")
             detection_base['Name'] = regex_data['keys'][re_dict[k]]['name']
             detection_base['Reason'] = regex_data['keys'][re_dict[k]]['description']
-            detection_base['File Path'] = str(regex_data)
+            detection_base['File Path'] = str(line)
             detection_base['Registry Path'] = "NA"
             detection_base['MITRE Tactic'] = regex_data['keys'][re_dict[k]]['tactic']
             detection_base['MITRE Technique'] = regex_data['keys'][re_dict[k]]['technique']
             detection_base['Risk'] = regex_data['keys'][re_dict[k]]['risk']
-            detection_base['Details'] = str(line)
+            detection_base['Details'] = "NA"
             logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
 
