@@ -15,7 +15,7 @@ import helpers.write_detection
 # WaitHint	Scope	Path	Options	ClassPath	Properties	SystemProperties	Qualifiers	Site	Container
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'services' Config")
+    logging.info("Starting  'services' Config")
     print("STARTING SERVICE SCAN")
     print(os.getcwd())
     command = 'powershell Get-WmiObject win32_service | Select * | Export-Csv -NoTypeInformation -Path ".\evidence\services.csv"'

@@ -13,7 +13,7 @@ import configs.network_connections.qwinsta
 # LocalAddress	LocalPort	RemoteAddress	RemotePort	State	Process
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'network_connections' Config")
+    logging.info("Starting  'network_connections' Config")
     print("STARTING NETWORK CONNECTION SCAN")
     command = 'powershell -Command  "Get-NetTcpConnection | Select-Object local*,remote*,state,@{Name=\'Process\';Expression={(Get-Process -Id $_.OwningProcess).ProcessName}} | Export-CSV -NoTypeInformation -Path .\evidence\connections.csv"'
     result = helpers.execute.execute(command)
@@ -48,7 +48,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "High"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state == "Listen" and remote_port == ["3389"] and process_name == 'svchost':
             print(f"RDP Listening for Connections")
@@ -61,7 +61,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "Low"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state.startswith("Established") and (remote_port == ["3389"] or process_name == 'mstsc'):
             print(f"Outbound RDP Connection to: {remote_ip}")
@@ -74,7 +74,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "High"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state.startswith("Established") and local_port == ["3389"]:
             print(f"Inbound RDP Connection from: {remote_ip}")
@@ -87,7 +87,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "High"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state.startswith("Established") and remote_port in ["5985", "5986"] and process_name == 'powershell':
             print(f"Outbound WinRM Connection to: {remote_ip}")
@@ -100,7 +100,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "Medium"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state.startswith("Established") and local_port in ["5985", "5986"]:
             print(f"Potential Inbound WinRM Connection to: {remote_ip}")
@@ -113,7 +113,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "Medium"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state == "Listen" and local_port in ["5985", "5986"]:
             print(f"Listening for WinRM Connections")
@@ -126,7 +126,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "Medium"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state == "Listen" and local_port == "22":
             print(f"Listening for SSH Connections")
@@ -139,7 +139,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "Medium"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state.startswith("Established") and local_port == "22":
             print(f"Inbound SSH Connection from {remote_ip}")
@@ -152,7 +152,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "High"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state.startswith("Established") and remote_port == "22":
             print(f"Outbound SSH Connection to {remote_ip}")
@@ -165,7 +165,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "Medium"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state == "Listen" and local_port == "23":
             print(f"Listening for TelNet Connections")
@@ -190,7 +190,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "Medium"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state == "Listen" and local_port == "445":
             print(f"Listening for SMB Connections")
@@ -203,7 +203,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "Medium"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state.startswith("Established") and remote_port in ["139, 445"]:
             print(f"Potential Outbound SMB Connection to: {remote_ip}")
@@ -216,7 +216,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "Medium"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state.startswith("Established") and local_port in ["139, 445"]:
             print(f"Potential Inbound SMB Connection from: {remote_ip}")
@@ -229,7 +229,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "Medium"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state.startswith("Established") and process_name.lower() in ["svchost", "lsass","smss","csrss","wininit","services","lsm","winlogon","explorer"]:
             print(f"System Process with Established Connection: {process_name}:{remote_ip}")
@@ -242,7 +242,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "High"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
         if state.startswith("Established") and (local_port in ["5900"] or remote_port in ["5900"]):
             print(f"Potential VNC Connection: {process_name}:{local_port} to {remote_ip}:{remote_port}")
@@ -255,7 +255,7 @@ def process_services(file):
             detection_base['MITRE Technique'] = "NA"
             detection_base['Risk'] = "High"
             detection_base['Details'] = str(d)
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
 
     helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)

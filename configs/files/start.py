@@ -10,7 +10,7 @@ import helpers.hash_file
 import helpers.write_detection
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'files' Config")
+    logging.info("Starting  'files' Config")
     print("STARTING FILE-NAME SCAN")
     name_data, ext_data, hash_list = read_configs()
     name_scan(name_data)
@@ -23,24 +23,24 @@ def read_configs():
             name_data = yaml.safe_load(f)
         except yaml.YAMLError as e:
             print(e)
-            logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\files\\suspicious_names.yml")
+            logging.exception("Error Reading configs\\files\\suspicious_names.yml")
             sys.exit(1)
     with open('configs\\files\\suspicious_extensions.yml') as f:
         try:
             extension_data = yaml.safe_load(f)
         except yaml.YAMLError as e:
             print(e)
-            logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\files\\suspicious_extensions.yml")
+            logging.exception("Error Reading configs\\files\\suspicious_extensions.yml")
             sys.exit(1)
     with open('iocs\\primary_hashlist.txt') as f:
         hash_list = f.readlines()
-    logging.info(str(datetime.datetime.now()) + " Successfully Read: iocs\\primary_hashlist.txt")
+    logging.info("Successfully Read: iocs\\primary_hashlist.txt")
     return name_data, extension_data, hash_list
 
 
 def name_scan(name_data):
     detection_list = []
-    logging.info(str(datetime.datetime.now()) + " Starting File Name Scan")
+    logging.info("Starting File Name Scan")
     path_list = []
     matches = []
     paths = name_data['paths']
@@ -71,7 +71,7 @@ def name_scan(name_data):
 
 
 def extension_scan(ext_data, hashes):
-    logging.info(str(datetime.datetime.now()) + " Starting File Extension Scan")
+    logging.info("Starting File Extension Scan")
     path_list = []
     matches = []
     allow_list = []
@@ -109,7 +109,7 @@ def extension_scan(ext_data, hashes):
                         detection_base['MITRE Technique'] = "NA"
                         detection_base['Risk'] = "High"
                         detection_base['Details'] = f"SHA256: {sha256}"
-                        logging.info(str(datetime.datetime.now()) + f" Hash Match: {full_path}")
+                        logging.info(f"Hash Match: {full_path}")
                         detection_list.append(detection_base)
                     else: #Don't alert twice on the same file
                         matches.append(full_path)

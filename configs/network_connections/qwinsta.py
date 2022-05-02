@@ -9,7 +9,7 @@ import helpers.csv_parse
 import helpers.write_detection
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'startup' Config")
+    logging.info("Starting  'startup' Config")
     print("STARTING STARTUP SCAN")
     print(os.getcwd())
     command = 'qwinsta'

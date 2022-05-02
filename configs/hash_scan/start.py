@@ -8,7 +8,7 @@ import configuration_data
 import helpers.hash_file
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'hash_scan' Config")
+    logging.info("Starting  'hash_scan' Config")
     print("STARTING HASH SCAN")
     hash_list, ext_data = read_configs()
     extension_scan(hash_list, ext_data)
@@ -20,16 +20,16 @@ def read_configs():
             extension_data = yaml.safe_load(f)
         except yaml.YAMLError as e:
             print(e)
-            logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\hash_scan\\suspicious_extensions_extended.yml")
+            logging.exception("Error Reading configs\\hash_scan\\suspicious_extensions_extended.yml")
             sys.exit(1)
-    logging.info(str(datetime.datetime.now()) + " Successfully Read: configs\\hash_scan\\suspicious_extensions_extended.yml")
+    logging.info("Successfully Read: configs\\hash_scan\\suspicious_extensions_extended.yml")
     with open('iocs\\primary_hashlist.txt') as f:
         hash_list = f.readlines()
-    logging.info(str(datetime.datetime.now()) + " Successfully Read: iocs\\primary_hashlist.txt")
+    logging.info("Successfully Read: iocs\\primary_hashlist.txt")
     return  hash_list, extension_data
 
 def extension_scan(hashes, ext_data):
-    logging.info(str(datetime.datetime.now()) + " Starting File Extension Scan")
+    logging.info("Starting File Extension Scan")
     path_list = []
     allow_list = []
     detection_list = []
@@ -49,7 +49,7 @@ def extension_scan(hashes, ext_data):
         path_list.append(expanded_path)
     for path in path_list:
         for root, sub, f in os.walk(path):
-            logging.info(str(datetime.datetime.now()) + f"Scanning: {root}")
+            logging.info(f"Scanning: {root}")
             for file in f:
                 if os.path.splitext(file)[1].lower() in ext_data['extensions'] and not root in allow_list:
                     full_path = os.path.join(root, file)
@@ -65,7 +65,7 @@ def extension_scan(hashes, ext_data):
                         detection_base['MITRE Technique'] = "NA"
                         detection_base['Risk'] = "High"
                         detection_base['Details'] = f"SHA256: {sha256}"
-                        logging.info(str(datetime.datetime.now()) + f" Hash Match: {full_path}")
+                        logging.info(f" Hash Match: {full_path}")
                         detection_list.append(detection_base)
 
     helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)

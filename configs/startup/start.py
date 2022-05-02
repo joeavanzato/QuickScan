@@ -11,7 +11,7 @@ import helpers.write_detection
 # Caption	Description	Command	Location	Name	User	UserSID	PSComputerName
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'startup' Config")
+    logging.info("Starting  'startup' Config")
     print("STARTING STARTUP SCAN")
     print(os.getcwd())
     command = 'powershell Get-CimInstance -ClassName Win32_StartupCommand | Select-Object -Property Caption,Description,Command,Location,Name,User,UserSID,PSComputerName | Export-CSV -NoTypeInformation -Path ".\evidence\startup.csv"'

@@ -16,13 +16,13 @@ import helpers.write_detection
 #detection_base['Details'] = str(d)
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'files' Config")
+    logging.info("Starting  'files' Config")
     print("STARTING TRAILING-SPACE SCAN")
     extension_scan()
 
 
 def extension_scan():
-    logging.info(str(datetime.datetime.now()) + " Starting File Extension Scan")
+    logging.info("Starting File Extension Scan")
     path_list = []
     matches = []
     detection_list = []
@@ -59,6 +59,6 @@ def extension_scan():
                     detection_base['Details'] = "NA"
                     detection_list.append(detection_base)
                     matches.append(full_path)
-    logging.info(str(datetime.datetime.now()) + " False Extension Scan Complete")
+    logging.info("False Extension Scan Complete")
     helpers.write_detection.write_detection(configuration_data.detection_csv, configuration_data.fields, detection_list)
     return path_list

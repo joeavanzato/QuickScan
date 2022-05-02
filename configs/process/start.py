@@ -11,10 +11,8 @@ import helpers.execute
 import helpers.csv_parse
 import helpers.write_detection
 
-# Field Output
-
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'process' Config")
+    logging.info("Starting  'process' Config")
     print("STARTING PROCESS SCAN")
     command = 'powershell -Command  Get-CimInstance Win32_Process | Select-Object * | Export-CSV -NoTypeInformation -Path .\evidence\\processes.csv"'
     result = helpers.execute.execute(command)
@@ -24,7 +22,7 @@ def launch():
             command_regex = yaml.safe_load(f)
         except yaml.YAMLError as e:
             print(e)
-            logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\evtx\\security\\malicious_commandline_regex.yml")
+            logging.exception("Error Reading configs\\evtx\\security\\malicious_commandline_regex.yml")
             sys.exit(1)
 
     with open('configs\\files\\suspicious_names.yml') as f:
@@ -32,7 +30,7 @@ def launch():
             name_data = yaml.safe_load(f)
         except yaml.YAMLError as e:
             print(e)
-            logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\files\\suspicious_names.yml")
+            logging.exception("Error Reading configs\\files\\suspicious_names.yml")
             sys.exit(1)
 
     re_list = []

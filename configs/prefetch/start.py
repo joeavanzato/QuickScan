@@ -12,7 +12,7 @@ import helpers.write_detection
 # Field Output
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'prefetch' Config")
+    logging.info("Starting  'prefetch' Config")
     print("STARTING PREFETCH SCAN")
     try:
         contents = os.listdir(os.getenv("SYSTEMROOT")+"\\Prefetch")
@@ -28,7 +28,7 @@ def process(contents):
             name_data = yaml.safe_load(f)
         except yaml.YAMLError as e:
             print(e)
-            logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\files\\suspicious_names.yml")
+            logging.exception("Error Reading configs\\files\\suspicious_names.yml")
             sys.exit(1)
     suspicious_names = name_data['names']
     #fields = ['Name', 'Reason','File Path','Registry Path','MITRE Tactic','MITRE Technique','Risk','Details']

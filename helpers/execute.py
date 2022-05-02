@@ -7,7 +7,7 @@ import datetime
 def execute(command):
     try:
         print(command)
-        logging.info(str(datetime.datetime.now()) + " Executing: "+command)
+        logging.info("Executing: "+command)
         result = subprocess.run(args=command, capture_output=True, check=True)
         return result.stdout.decode('utf-8', errors='replace')
     except:

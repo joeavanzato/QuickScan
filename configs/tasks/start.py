@@ -25,7 +25,7 @@ import helpers.write_detection
 #detection_base['Details'] = str(d)
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'tasks' Config")
+    logging.info("Starting  'tasks' Config")
     print("STARTING SCHEDULED TASK SCAN")
     print(os.getcwd())
     command = 'powershell schtasks /query /v /fo csv | ConvertFrom-CSV | Export-CSV -NoTypeInformation -Path ".\\evidence\\tasks.csv"'

@@ -177,8 +177,8 @@ def main():
     print("Run As Administrator!") #TODO - Check Admin - PyUAC works for elevation or other
     args = parse_args()
     log_file = "quickscan_log.log"
-    logging.basicConfig(filename=log_file, level=logging.DEBUG)
-    logging.info(str(datetime.datetime.now()) + " New Logger Initialized")
+    logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    logging.info("New Logger Initialized")
     try:
         os.mkdir('evidence')
     except OSError as e:

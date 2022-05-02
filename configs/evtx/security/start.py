@@ -15,13 +15,13 @@ import helpers.write_detection
 # TODO - Parsing/Alerting Logic for 4624, 4648, Local Group Adds, etc.
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'evtx\\security' Config")
+    logging.info("Starting  'evtx\\security' Config")
     print("STARTING evtx\\security SCAN")
     #command = 'powershell -Command "Get-WinEvent -FilterHashTable @{LogName=\'Security\'; Id=\'1100,1102,4624,4625,4648,4649,4688,4697,4698,4700,4702,4720,4722,4723,4724,4726,4732,5140\' }  | Select Id,RecordId,TimeCreated,Message | Export-Csv -NoTypeInformation -Path .\evidence\security.csv'
     command = 'powershell -Command "Get-WinEvent -FilterHashTable @{LogName=\'Security\'}  | Select Id,RecordId,TimeCreated,Message | Export-Csv -NoTypeInformation -Path .\evidence\security.csv'
     print("Exporting Security.evtx to CSV [This can take a few minutes if the log is large]..")
-    #result = helpers.execute.execute(command)
-    result = 0
+    result = helpers.execute.execute(command)
+    #result = 0
     if not result == "ERROR":
         process("evidence\security.csv")
 
@@ -34,14 +34,14 @@ def process(file):
             command_data = yaml.safe_load(f)
         except yaml.YAMLError as e:
             print(e)
-            logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\evtx\\security\\malicious_commands.yml")
+            logging.exception("Error Reading configs\\evtx\\security\\malicious_commands.yml")
             sys.exit(1)
     with open('configs\\evtx\\security\\malicious_commandline_regex.yml') as f:
         try:
             command_regex = yaml.safe_load(f)
         except yaml.YAMLError as e:
             print(e)
-            logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\evtx\\security\\malicious_commandline_regex.yml")
+            logging.exception("Error Reading configs\\evtx\\security\\malicious_commandline_regex.yml")
             sys.exit(1)
 
     re_list = []

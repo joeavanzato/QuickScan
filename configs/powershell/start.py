@@ -15,7 +15,7 @@ import helpers.write_detection
 # TODO - Maybe handle start-transcript files in C:\Users\*\Documents
 
 def launch():
-    logging.info(str(datetime.datetime.now()) + " Starting  'powershell' Config")
+    logging.info("Starting  'powershell' Config")
     print("STARTING POWERSHELL HISTORY SCAN")
     path = f'''{os.getenv("HOMEDRIVE")}\\Users\\*\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\ConsoleHost_history.txt'''
     paths = glob.glob(path)
@@ -33,7 +33,7 @@ def process(file):
             regex_data = yaml.safe_load(f)
         except yaml.YAMLError as e:
             print(e)
-            logging.exception(str(datetime.datetime.now()) + " Error Reading configs\\files\\suspicious_names.yml")
+            logging.exception("Error Reading configs\\files\\suspicious_names.yml")
             sys.exit(1)
     re_list = []
     re_dict = {}
@@ -69,7 +69,7 @@ def regex_check(line, detection_list, regex_data, re_list, re_dict):
             detection_base['MITRE Technique'] = regex_data['keys'][re_dict[k]]['technique']
             detection_base['Risk'] = regex_data['keys'][re_dict[k]]['risk']
             detection_base['Details'] = "NA"
-            logging.info(str(datetime.datetime.now()) + f" New Detection: {detection_base['Name']}")
+            logging.info(f" New Detection: {detection_base['Name']}")
             detection_list.append(detection_base)
 
 
